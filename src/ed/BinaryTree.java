@@ -24,103 +24,97 @@ public class BinaryTree {
     }
 
     //Métodos
-    public void setRaiz ( nodeTree root ) {
+    public void setRaiz(nodeTree root) {
         this.root = root;
     }
+
     public boolean isEmpty() {
         return this.root == null;
     }
-
+    
     public void insertNode(int data, nodeTree root) {
         nodeTree nodo = new nodeTree(data);
+        insertNode(nodo,root);
+    }
+
+    public void insertNode(nodeTree nodo, nodeTree root) {
         if (isEmpty()) {//Está vacío
-            this.root = nodo;
+            root = nodo;
             this.heigth++;
         } else//Si no está vacío
-        //Si el nodo es mayor que raíz
-        {
-            if (this.root.data <= nodo.data) {
-                if (root.left == null) {
-                    root.left = nodo;
-                } else {//Si tiene un elemento a la izq
-                    //Buscará por la izquierda hasta encontrar un espacio  
-                    insertNode(data, root.left);
-                }
-            } else//Si no es mayor que raiz
-            {
-                if (root.right == null) {//Caso base
+            if (root.data <= nodo.data) {
+                //Si el nodo es mayor que raíz
+                if (root.right == null) {
                     root.right = nodo;
+                } else {//Si tiene un elemento a la izq
+                  //Buscará por la izquierda hasta encontrar un espacio  
+                    insertNode(nodo, root.right);
+                  }
+            } else//Si no es mayor que raiz
+                if (root.left == null) {//Caso base
+                  root.left = nodo;
                 } else {//Si tiene un elemento a la derecha, busacará por la derecha hasta encontrar un espacio
-                    insertNode(data, root.right);
-                }
-            }
-        }
+                    insertNode(nodo, root.left);
+                  }
         this.elements++;
     }
 
     public void eraseNode(int data, nodeTree root) {
         nodeTree p, q;
         for (p = null, q = getRaiz();
-             q != null && data != q.getData();
-             p = q, q = data < q.getData()?q.getLeft():q.getRight());
+                q != null && data != q.data;
+                p = q, q = data < q.data ? q.left : q.right);
         if (q == null) {
             System.out.println("no hay nodo para borrar");;
         }
-        if (q.getLeft() != null && q.getRight() != null) {// nodo con dos hijos
-            q.setData(eraseNodoMenorDer(q));
+        if (q.left != null && q.right != null) {// nodo con dos hijos
+            q.data = eraseNodoMenorDer(q);
         }
-        if (q.getLeft() == null && q.getRight() == null) {// nodo hoja
+        if (q.left == null && q.right == null) {// nodo hoja
             if (p != null) {
-                if (p.getLeft() == q) {
-                    p.setLeft(null);
+                if (p.left == q) {
+                    p.left = null;
                 } else {
-                    p.setRight(null);
+                    p.right = null;
                 }
             } else {
                 setRaiz(null);
             }
-        } else {
-            if (q.getLeft() == null) {// solo tiene hijo derecho
-                if (q == getRaiz()) {
-                    setRaiz(q.getRight());
-                } else {
-                    if (p.getLeft() == q) {
-                        p.setLeft(q.getRight());
-                    } else {
-                        p.setRight(q.getRight());
-                    }
-                }
-            } else {// solo tiene hijo izquierdo
-                if (q == getRaiz()) {
-                    setRaiz(q.getLeft());
-                } else {
-                    if (p.getLeft() == q) {
-                        p.setLeft(q.getLeft());
-                    } else {
-                        p.setRight(q.getLeft());
-                    }
-                }
+        } else if (q.left == null) {// solo tiene hijo derecho
+            if (q == getRaiz()) {
+                setRaiz(q.right);
+            } else if (p.left == q) {
+                p.left = q.right;
+            } else {
+                p.right = q.right;
             }
+        } else// solo tiene hijo izquierdo
+        if (q == getRaiz()) {
+            setRaiz(q.left);
+        } else if (p.left == q) {
+            p.left = q.left;
+        } else {
+            p.right = q.left;
         }
         --this.elements;
     }
-    
-    public int eraseNodoMenorDer ( nodeTree q ) {
+
+    public int eraseNodoMenorDer(nodeTree q) {
         int o;
         nodeTree aux = q, b = q;
-        q = q.getRight ( );
-        while ( q.getLeft ( ) != null ) {
+        q = q.right;
+        while (q.left != null) {
             aux = q;
-            q = q.getLeft ( );
+            q = q.left;
         }
-        if ( aux == b )
-            aux.setRight ( q.getRight ( ) );
-        else
-            aux.setLeft ( q.getRight ( ) );
-        o = q.getData ( );
+        if (aux == b) {
+            aux.right = q.right;
+        } else {
+            aux.left = q.right;
+        }
+        o = q.data;
         return o;
     }
-
 
     public nodeTree getRaiz() {
         return this.root;
@@ -142,9 +136,9 @@ public class BinaryTree {
         if (p == null) {
             return;
         }
-        System.out.print(p.getData() + " ");
-        preOrden(p.getLeft());
-        preOrden(p.getRight());
+        System.out.print(p.data + " ");
+        preOrden(p.left);
+        preOrden(p.right);
     }
 
     public void inOrden() {
@@ -155,9 +149,9 @@ public class BinaryTree {
         if (p == null) {
             return;
         }
-        inOrden(p.getLeft());
-        System.out.print(p.getData() + " ");
-        inOrden(p.getRight());
+        inOrden(p.left);
+        System.out.print(p.data + " ");
+        inOrden(p.right);
     }
 
     public void postOrden() {
@@ -168,8 +162,8 @@ public class BinaryTree {
         if (p == null) {
             return;
         }
-        postOrden(p.getLeft());
-        postOrden(p.getRight());
-        System.out.print(p.getData() + " ");
+        postOrden(p.left);
+        postOrden(p.right);
+        System.out.print(p.data + " ");
     }
 }

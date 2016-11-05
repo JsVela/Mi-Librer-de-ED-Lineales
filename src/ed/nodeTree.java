@@ -22,28 +22,5 @@ public class nodeTree {
         this.left = null;
         this.right = null;
     }
-
-    public int getData() {
-        return data;
-    }
-
-    public nodeTree getLeft() {
-        return left;
-    }
-
-    public nodeTree getRight() {
-        return right;
-    }
     
-    public void setData ( int data ) {
-        this.data = data;
-    }
-
-    public void setLeft ( nodeTree left ) {
-        this.left = left;
-    }
-
-    public void setRight ( nodeTree right ) {
-        this.right = right;
-    }
 }
