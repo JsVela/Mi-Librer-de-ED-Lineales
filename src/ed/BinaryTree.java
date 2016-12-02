@@ -166,4 +166,19 @@ public class BinaryTree {
         postOrden(p.right);
         System.out.print(p.data + " ");
     }
+    public void BreadthFirst ( ) { // recorrido primero en anchura
+    queue q = new queue ( );
+    nodeTree tmp;
+    q.insertLast(getRaiz());
+    while ( !q.isEmpty ( ) ) {
+        tmp = (nodeTree) q.getFirst();
+        q.deleteFirst();
+        if ( tmp.left != null )
+            q.insertLast ( tmp.left );
+        if ( tmp.right != null )
+            q.insertLast ( tmp.right );
+        System.out.print ( tmp.data + " " );
+    }
+}
+
 }
